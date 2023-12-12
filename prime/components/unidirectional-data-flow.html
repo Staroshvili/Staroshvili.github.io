@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Особенности парсинга DOM-шаблона</h1>
+			<p>
+				Если пишете шаблоны Vue непосредственно в DOM, то Vue придётся получать строковый шаблон из DOM. Это
+				приводит к некоторым особенностям, связанным с собственным поведением браузеров при парсинге HTML.
+			</p>
+
+			<h2>Ограничение по расположению элементов</h2>
+			<p>У некоторых HTML-элементов, таких как ul, ol, table и select, есть ограничения на то, какие элементы
+				могут находиться внутри них, кроме того некоторые элементы li, tr и option могут быть только внутри
+				определённых элементов.</p>
+			<p>Это может привести к проблемам при использовании компонентов с элементами у которых есть такие
+				ограничения. Например:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;table&gt; <br>
+		&lt;blog-post-row&gt;&lt;/blog-post-row&gt;<br>
+	  &lt;/table&gt;</code>
+			</p>
+			<p>При парсинге пользовательский компонент blog-post-row будет поднят выше, поскольку считается недопустимым
+				содержимым, приводя к ошибкам при отрисовке. Для решения этой проблемы можно использовать специальный
+				атрибут is:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;table&gt; <br>
+		&lt;tr is="vue:blog-post-row"&gt;&lt;/tr&gt;<br>
+	  &lt;/table&gt;</code>
+			</p>
+
+			<h2>Отсутствие чувствительности к регистру</h2>
+			<p>Имена атрибутов HTML не чувствительны к регистру, поэтому браузеры будут интерпретировать любые заглавные
+				символы как строчные. А значит, при использовании DOM-шаблонов, необходимо указывать имена входных
+				параметров в camelCase и обработчики событий в kebab-case (разделённые дефисом) эквивалентах:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">// camelCase в JavaScript <br>
+		app.component('blog-post', {<br>
+		  props: ['postTitle'],<br>
+		  template: `<br>
+			&lt;h3&gt;{{ postTitle }}&lt;/h3&gt;
+		  `<br>
+		})</code>
+			</p> 
+			<br>
+			<br>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;!-- kebab-case в HTML --&gt; <br>
+		&lt;blog-post post-title="hello!"&gt;&lt;/blog-post&gt;</code>
+			</p>
+			<p>Для начала это всё, что нужно знать об особенностях парсинга DOM-шаблонов — и вообще-то это окончание
+				раздела Основы. Наши поздравления! Хоть ещё есть чему поучиться, но сначала рекомендуем отвлечься и
+				попробовать поиграться с Vue и самостоятельно сделать что-нибудь интересное.</p>
+
+		</div>
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

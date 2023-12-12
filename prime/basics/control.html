@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Управление приложением</h1>
+			<h2 class="main">Официальная Flux-подобная библиотека</h2>
+			<p>Большие приложения часто могут усложняться из-за множества фрагментов состояния, разбросанных по
+				многим компонентам, и взаимодействий между ними. Для решения этой проблемы Vue предлагает Vuex —
+				собственную библиотеку для управления состоянием, вдохновлённую языком Elm. Она интегрируется с
+				vue-devtools и позволяет заниматься отладкой с функцией «машиной времени».</p>
+			<h2 class="main">Создание простого контейнера состояния с нуля</h2>
+			<p>Часто упускается из виду, что «источником истины» в приложениях Vue будет реактивный объект data
+				— экземпляр компонента лишь проксируют доступ к нему. Поэтому, если есть часть состояния,
+				которая должна быть общей для нескольких экземпляров, то можно воспользоваться методом reactive,
+				чтобы сделать объект реактивным:</p>
+			<p class="code">
+				<code class="highlight">
+					const { createApp, reactive } = Vue <br>
+					<br>
+					const sourceOfTruth = reactive({<br>
+						message: 'Привет'<br>
+					})<br>
+					<br>					
+					const appA = createApp({<br>
+						data() {<br>
+						return sourceOfTruth<br>
+						}<br>
+					}).mount('#app-a')<br>
+					<br>			
+					const appB = createApp({<br>
+						data() {<br>
+						return sourceOfTruth<br>
+						}<br>
+							}).mount('#app-b')
+				</code>
+			</p>
+			<br>
+			<p class="code">
+				<code class="highlight">
+					&lt;div id="app-a"&gt;Приложение A: {{ message }}&lt;/div&gt; <br>
+					&lt;div id="app-b"&gt;Приложение B: {{ message }}&lt;/div&gt;
+				</code>
+			</p>
+			<p>Сейчас при изменении sourceOfTruth оба приложения appA и appВ будут автоматически обновлять свои
+				представления. Теперь есть единый источник истины, но отладка станет кошмаром. Любая часть
+				данных может быть изменена в любой части приложения в любое время, не оставляя никаких следов.
+			</p>
+			<p class="code">
+				<code class="highlight">
+					const appB = createApp({ <br>
+					data() {<br>
+						return sourceOfTruth<br>
+					},<br>
+					mounted() {<br>
+						sourceOfTruth.message = 'Пока' // оба приложения теперь показывают 'Пока'<br>
+					}<br>
+					}).mount('#app-b')
+				</code>
+			</p>
+			<p>Для решения этой проблемы можно адаптировать шаблон проектирования «состояние»:</p>
+			<p class="code">
+				<code class="highlight">
+					const store = { <br>
+						debug: true,<br>
+						<br>				
+						state: reactive({<br>
+							message: 'Привет!'<br>
+						}),<br>
+						<br>
+						setMessageAction(newValue) {<br>
+							if (this.debug) {<br>
+							console.log('setMessageAction вызван с', newValue)<br>
+							}<br>
+							<br>
+							this.state.message = newValue<br>
+						},<br>
+						<br>		
+						clearMessageAction() {<br>
+							if (this.debug) {<br>
+							console.log('clearMessageAction вызван')<br>
+							}<br>
+							<br>	
+							this.state.message = ''<br>
+							}<br>
+					}
+				</code>
+			</p>
+			<p>Обратите внимание, что все действия, которые изменяют состояние хранилища, помещены в него. Такой
+				подход к централизованному управлению состоянием позволяет легче понять, какие типы мутаций
+				могут произойти и как они вызываются. Теперь, когда что-то пойдёт не так — у нас будет журнал
+				событий с последовательностью действий, приведших к ошибке.</p>
+			<p>При этом в каждом экземпляре/компоненте может быть и своё собственное состояние, которым он
+				управляет</p>
+			<p class="code">
+				<code class="highlight">
+					&lt;div&gt; {{ sharedState.message }}&lt;/div&gt; <br>
+					&lt;div id="app-b"&gt;{{ sharedState.message }}&lt;/div&gt;
+				</code>
+			</p>
+			<br>
+			<p class="code">
+				<code class="highlight">
+					const appA = createApp({ <br>
+						data() {<br>
+							return {<br>
+								privateState: {},<br>
+								sharedState: store.state<br>
+						}<br>
+					},<br>
+					mounted() {<br>
+						store.setMessageAction('Пока!')<br>
+					}<br>
+					}).mount('#app-a')<br>
+					<br>
+					const appB = createApp({<br>
+					data() {<br>
+						return {<br>
+						privateState: {},<br>
+						sharedState: store.state<br>
+						}<br>
+					}<br>
+					}).mount('#app-b')
+				</code>
+			</p>
+			<p>Если продолжить развивать концепцию, в которой компонентам не разрешается напрямую изменять состояние
+				хранилища, а вместо этого они должны отправлять события, которые уведомляют хранилище о необходимости
+				выполнения каких-то действий, то в конечном итоге приходим к архитектуре Flux. Преимущество этой
+				архитектуры заключается в том, что можно записывать все мутации состояния, происходящие с хранилищем, и
+				создавать продвинутые средства для отладки, такие как журналы мутаций, моментальные снимки и путешествие
+				по истории изменений / «машину времени».</p>
+		</div>
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

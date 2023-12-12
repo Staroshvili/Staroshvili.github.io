@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Динамическое переключение компонентов</h1>
+			<p>
+				Иногда бывает полезным динамически переключаться между компонентами, как например в интерфейсе с
+				вкладками
+			</p>
+			<p>Это возможно сделать с помощью элемента <component> со специальным атрибутом is:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;!-- Компонент будет меняться при изменении currentTabComponent --&gt; <br>
+		&lt;component :is="currentTabComponent"&gt;&lt;/component&gt;</code>
+			</p>
+			<p>В примере выше значением currentTabComponent может быть:</p>
+			<p>1. Имя зарегистрированного компонента</p>
+			<p>2. Объект с настройками компонента</p>
+			<p>Посмотрите этот sandbox чтобы поэкспериментировать с полным кодом, или эту версию с примером привязки
+				объекта с настройками компонента вместо указания его имени.</p>
+			<p>Можно также использовать атрибут is и для создания обычных HTML-элементов.</p>
+		</div>
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

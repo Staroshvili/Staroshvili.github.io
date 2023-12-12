@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div class="container">
+
+		<h1>Привязка значений</h1>
+		<p>
+			Для радиокнопок и выпадающих списков в качестве привязываемых значений v-model обычно будут
+			статические строки (или булево для чекбокса):
+		</p>
+		<p class="code" data-file="App.vue">
+			<code class="highlight" data-module="highlight" data-lang="html">
+					&lt;!-- `picked` будет строкой "a" при выборе --&gt; <br>
+				&lt;input type="radio" v-model="picked" value="a" /&gt; <br>
+				<br>
+				&lt;!-- `toggle` может принимать значение true или false --&gt; <br>
+				&lt;input type="checkbox" v-model="toggle" /&gt; <br>
+				<br>
+				&lt;!-- `selected` будет строкой "abc" при выборе первого пункта --&gt; <br>
+				&lt;select v-model="selected"&gt; <br>
+				&lt;option value="abc">ABC&lt;/option&gt;
+				&lt;/select&gt;
+			</code>
+		</p>
+		<p>Но иногда может потребоваться привязать значение к динамическому свойству текущего активного
+			экземпляра. Для этого можно использовать v-bind. Кроме того, использование v-bind позволяет
+			привязать значение поля с нестроковыми значениями.</p>
+
+		<h2>Чекбокс</h2>
+		<p class="code" data-file="App.vue">
+			<code class="highlight" data-module="highlight"
+				data-lang="html">&lt;input type="checkbox" v-model="toggle" true-value="да" false-value="нет" /&gt;</code>
+		</p>
+		<p class="code" data-file="App.vue">
+			<code class="highlight" data-module="highlight" data-lang="html">
+				// когда чекбокс выбран br
+		vm.toggle === 'да' <br>
+		 <br>
+		// когда чекбокс сброшен br
+		vm.toggle === 'нет'</code>
+		</p>
+
+		<h2>Радиокнопки</h2>
+		<p class="code" data-file="App.vue">
+			<code class="highlight" data-module="highlight"
+				data-lang="html">&lt;input type="radio" v-model="pick" :value="a" /&gt;</code>
+		</p>
+		<p class="code" data-file="App.vue">
+			<code class="highlight" data-module="highlight" data-lang="html">// когда выбран
+		vm.pick === vm.a</code>
+		</p>
+
+		<h2>Выпадающие списки</h2>
+		<p class="code" data-file="App.vue">
+			<code class="highlight" data-module="highlight" data-lang="html">&lt;select v-model="selected"&gt; <br>
+		&lt;!-- инлайновый объект с данными --&gt; <br>
+		&lt;option :value="{ number: 123 }">123&lt;/option&gt; <br>
+	  &lt;/select&gt;</code>
+		</p>
+		<p class="code" data-file="App.vue">
+			<code class="highlight" data-module="highlight" data-lang="html">// когда выбран
+		typeof vm.selected // => 'object' <br>
+		vm.selected.number // => 123</code>
+		</p>
+
+
+		<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+		<footer>
+			<div class="jump">
+				<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+			</div>
+		</footer>
+		<script src="/js/html2pdf.bundle.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

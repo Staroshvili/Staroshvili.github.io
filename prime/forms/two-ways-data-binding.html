@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Обычное использование</h1>
+			<p>
+				Можно использовать директиву v-model для создания двусторонней привязки данных с элементами форм:
+				input, textarea и select. Она автоматически выбирает правильный способ обновления элемента в
+				зависимости от его типа. Хоть v-model и выглядит как некая магия, по сути это лишь синтаксический
+				сахар для обновления данных при вводе пользователем, плюс небольшие доработки для некоторых
+				граничных случаев.
+			</p>
+			<p>
+				Внутренне v-model использует разные свойства и генерирует разные события для различных элементов
+				форм:
+			</p>
+			<p>1. Элементы для ввода текста и многострочного текста используют свойство value и событие input;</p>
+			<p>2. Чекбоксы и радиокнопки используют свойство checked и событие change;</p>
+			<p>3. Выпадающие списки используют свойство value и событие change.</p>
+			<h2 class="main">Текст</h2>
+
+			<p class="block" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;input v-model="message" placeholder="отредактируй меня" /&gt;</code>
+			</p>
+			<h2 class="main">Многострочный текст</h2>
+			<p class="block" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;span&gt;Многострочное сообщение:&lt;/span&gt; <br>
+					&lt;br /&gt; <br>
+					&lt;textarea v-model="message" placeholder="введите несколько строчек"&gt;&lt;/textarea&gt;</code>
+			</p>
+
+
+			<p>Интерполяция внутри textarea не работают. Используйте директиву v-model вместо неё.</p>
+			<p class="block" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;!-- НЕ РАБОТАЕТ --&gt; <br>
+					&lt;textarea&gt;{{ text }}&lt;/textarea&gt; <br>
+					<br>
+					&lt;!-- ok --&gt;<br>
+					&lt;textarea v-model="text"&gt;&lt;/textarea&gt;</code>
+			</p>
+
+			<h2 class="main">Чекбоксы</h2>
+			<p>Один чекбокс, привязанный к булевому значению:</p>
+			<p class="block" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;input type="checkbox" id="checkbox" v-model="checked" /&gt;</code>
+			</p>
+
+
+			<p>Список чекбоксов, привязанных к одному массиву:</p>
+			<p class="block" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;div id="v-model-multiple-checkboxes"&gt; <br>
+					&lt;input type="checkbox" id="jack" value="Джек" v-model="checkedNames" /&gt;<br>
+					&lt;label for="jack"&gt;Джек&lt;/label&gt;<br>
+					&lt;input type="checkbox" id="john" value="Джон" v-model="checkedNames" /&gt;<br>
+					&lt;label for="john"&gt;Джон&lt;/label&gt;<br>
+					&lt;input type="checkbox" id="mike" value="Майк" v-model="checkedNames" /&gt;<br>
+					&lt;label for="mike"&gt;Майк&lt;/label&gt;<br>
+					&lt;br /&gt;<br>
+				  &lt;/div&gt;</code>
+			</p>
+
+			<h2 class="main">Радиокнопки</h2>
+			<p class="block" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					&lt;div id="v-model-radiobutton"&gt; <br>
+						&lt;input type="radio" id="one" value="Один" v-model="picked" /&gt;<br>
+						&lt;label for="one">Один&lt;/label&gt;<br>
+						&lt;br /&gt;<br>
+						&lt;input type="radio" id="two" value="Два" v-model="picked" /&gt;<br>
+						&lt;label for="two">Два&lt;/label&gt;<br>
+						&lt;br /&gt;<br>
+					&lt;/div&gt;
+				</code>
+			</p>
+		
+
+		</div>
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

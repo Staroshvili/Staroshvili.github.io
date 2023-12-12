@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<!-- данные, сохраняемые в pdf -->
+		<div class="container">
+			<h1 class="main">Экземпляр Vue</h1>
+
+			<h2 class="main">Создание экземпляра Vue</h2>
+			<p>Каждое приложение начинается с создания нового экземпляра Vue с помощью функции Vue:</p>
+			<p class="code">
+				<code class="highlight">var vm = new Vue({// опции})</code>
+			</p>
+			<p>Хоть Vue и не реализует паттерн MVVM в полной мере, архитектура фреймворка им во многом
+				вдохновлена. Поэтому переменную с экземпляром Vue традиционно именуют vm (сокращённо от
+				ViewModel).</p>
+			<p>При создании экземпляра Vue необходимо передать объект опций. Большая часть этого руководства
+				посвящена описанию, как можно использовать эти опции для достижения желаемого поведения.
+				Полный список опций можно посмотреть в справочнике API.</p>
+			<p>Приложение Vue состоит из корневого экземпляра Vue, создаваемого с помощью new Vue,
+				опционально организованного в дерево вложенных, повторно используемых компонентов. Например,
+				дерево компонентов для приложения TODO-списка может выглядеть так:</p>
+			<p class="code">
+				<code class="highlight">Корневой экземпляр <br>
+				└─ TodoList <br>
+		   		├─ TodoItem <br>
+		  		│  ├─ TodoButtonDelete <br>
+		   		│  └─ TodoButtonEdit <br>
+			 	└─ TodoListFooter <br>
+			  	├─ TodosButtonClear <br>
+			 	└─ TodoListStatistics</code>
+				</p>
+
+			<h2 class="main">Данные и методы</h2>
+			<p>Когда экземпляр Vue создан, он добавляет все свойства, найденные в опции data, в систему
+				реактивности Vue. Поэтому представление будет «реагировать» на их изменения, обновляясь в
+				соответствии с новыми значениями.</p>
+			<p class="code">
+				<code class="highlight">// Наш объект data <br>
+					var data = { a: 1 } <br>
+					// Объект добавляется в экземпляр Vue <br>
+					var vm = new Vue({ <br>
+					data: data <br>
+					}) <br>
+					// Получение свойства из экземпляра возвращает то же значение из исходных данных <br>
+					vm.a === data.a // => true <br>
+					// Изменение свойства экземпляра влияет на оригинальные данные
+					vm.a = 2 <br>
+					data.a // => 2 <br>
+					// ... и наоборот
+					data.a = 3 <br>
+					vm.a // => 3
+				</code>
+			</p>
+			<p>Когда значения изменяются, представление будет переотрисовано. Но обратите внимание, свойства
+				в data будут реактивными, только если они существовали при создании экземпляра. Это значит,
+				если добавить новое свойство, например:</p>
+			<p class="code">
+				<code class="highlight">vm.b = 'hi'</code>
+			</p>
+			<p>То изменения в b не будут вызывать никаких обновлений. Если вы знаете, что свойство вам
+				понадобится позже, но изначально оно пустое или несуществующее, нужно просто установить
+				начальное значение. Например:</p>
+			<p class="code">
+				<code class="highlight">data: { <br>
+					newTodoText: '', <br>
+					visitCount: 0, <br>
+					hideCompletedTodos: false,<br>
+					todos: [], <br>
+					error: null
+	  			}</code>
+			</p>
+			<p>Единственным исключением здесь является использование Object.freeze(), который предотвращает
+				изменение существующих свойств, что также означает невозможность отслеживать изменения
+				системой реактивности.</p>
+			<p class="code">
+				<code class="highlight">var obj = { <br>
+				foo: 'bar'<br>
+				}	<br>
+				<br>
+				Object.freeze(obj)<br>
+				<br>
+				new Vue({<br>
+					el: '#app',<br>
+					data: obj<br>
+				})
+				</code>
+			</p>
+			<p class="code">
+				<code class="highlight">&lt;div id="app"&gt; <br>
+					&lt;p&gt;{{ foo }}&lt;/p&gt;<br>
+					&lt;!-- мы теперь не можем обновить `foo`! --&gt;<br>
+					&lt;button&gt; v-on:click="foo = 'baz'">Изменить&lt;/button&gt;<br>
+					&lt;/div&gt;
+				</code>
+			</p>
+			<p>Кроме свойств объекта data, экземпляры Vue предоставляют ряд служебных свойств и методов
+				экземпляра. Их имена начинаются с префикса $, чтобы отличаться от пользовательских свойств.
+				Например:</p>
+			<p class="code">
+				<code class="highlight">var data = { a: 1 }<br>
+					var vm = new Vue({ <br>
+					el: '#example',<br>
+					data: data<br>
+					})<br>
+					<br>
+					vm.$data === data // => true<br>
+					vm.$el === document.getElementById('example') // => true<br>
+					<br>
+					// $watch — это метод экземпляра<br>
+					vm.$watch('a', function (newValue, oldValue) {<br>
+					// Этот коллбэк будет вызван, когда изменится `vm.a`<br>
+					})
+				</code>
+			</p>
+
+			<h2 class="main">Хуки жизненного цикла экземпляра</h2>
+			<p>Каждый экземпляр Vue при создании проходит через последовательность шагов инициализации —
+				например, настраивает наблюдение за данными, компилирует шаблон, монтирует экземпляр в DOM,
+				обновляет DOM при изменении данных. Между этими шагами вызываются функции, называемые хуками
+				жизненного цикла, с помощью которых можно выполнять свой код на определённых этапах.</p>
+			<p>Например, хук created можно использовать для выполнения кода после создания экземпляра:</p>
+			<p class="code">
+				<code class="highlight">new Vue({ <br>
+					data: { <br>
+					a: 1<br>
+					},<br>
+					created: function () {<br>
+					// `this` указывает на экземпляр vm<br>
+					console.log('Значение a: ' + this.a)<br>
+					}<br>
+					})<br>
+					// => "Значение a: 1"
+				</code>
+			</p>
+			<p>Существуют и другие хуки, вызываемые на различных стадиях жизненного цикла экземпляра,
+				например mounted, updated и destroyed. Все хуки вызываются с контекстной переменной this,
+				ссылающейся на вызывающий экземпляр Vue.</p>
+
+			<h2 class="main">Хуки жизненного цикла экземпляра</h2>
+			<p>
+				Ниже представлена диаграмма жизненного цикла экземпляра. Необязательно понимать её полностью
+				прямо сейчас, но по мере изучения и практики разработки к ней полезно будет обращаться.
+			</p>
+			<img class="lifecycle" src="/img/lifecycle.png">
+		</div>
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+
+			<h1 class="main">Вычисляемые свойства и наблюдители</h1>
+			<div class="content">
+				<h2 class="main">Вычисляемые свойства</h2>
+				<p>Выражения внутри шаблона удобны, но предназначены для простых операций. Большое
+					количество
+					логики в шаблоне сделает его раздутым и сложным для поддержки. Например, если есть
+					объект с
+					вложенным массивом:</p>
+				<p class="code">
+					<code class="highlight">
+						Vue.createApp({ <br>
+							data() {<br>
+							return {<br>
+								author: {<br>
+								name: 'John Doe',<br>
+								books: [<br>
+									'Vue 2 - Advanced Guide',<br>
+									'Vue 3 - Basic Guide',<br>
+									'Vue 4 - The Mystery'<br>
+								]<br>
+								}<br>
+							}<br>
+							}<br>
+						})
+						</code>
+				</p>
+				<p>
+					И потребуется отображать разные сообщения, в зависимости от того, есть ли у author
+					какие-то
+					книги или нет:
+				</p>
+				<p class="block">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div id="computed-basics"&gt; <br> 
+							&lt;p&gt;Есть опубликованные книги:&lt;/p&gt;<br> 
+							&lt;span&gt;{{ author.books.length > 0 ? 'Да' : 'Нет' }}&lt;/span&gt;<br>
+						&lt;/div&gt;
+					</code>
+				</p>
+				<p>
+					В таком случае шаблон уже не будет простым и декларативным. Потребуется взглянуть на
+					него,
+					прежде чем понять, что он выполняет вычисления в зависимости от author.books. Проблема
+					усугубится, если подобные вычисления в шаблоне потребуются не один раз.
+				</p>
+				<p>
+					Поэтому для сложной логики, включающей реактивные данные, следует использовать
+					вычисляемые
+					свойства.
+				</p>
+				<h3 class="main">Простой пример</h3>
+				<p class="block">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div id="computed-basics"&gt; &lt;br&gt;
+							&lt;p&gt;Есть опубликованные книги:&lt;/p&gt; <br>
+							&lt;span>{{ publishedBooksMessage }}&lt;/span&gt; <br>
+						&lt;/div>
+					</code>
+				</p> 
+				<br><br>
+				<p class="block">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						Vue.createApp({ <br>
+							data() { <br>
+							return {<br>
+								author: {<br>
+								name: 'John Doe',<br>
+								books: [<br>
+									'Vue 2 - Advanced Guide',<br>
+									'Vue 3 - Basic Guide',<br>
+									'Vue 4 - The Mystery'<br>
+								]<br>
+								}<br>
+							}<br>
+							},<br>
+							computed: {
+							// геттер вычисляемого свойства<br>
+							publishedBooksMessage() {<br>
+								// `this` указывает на экземпляр vm<br>
+								return this.author.books.length > 0 ? 'Да' : 'Нет'<br>
+							}<br>
+							}<br>
+						}).mount('#computed-basics')
+					</code>
+				</p>
+				<h3 class="main">Кэширование вычисляемых свойств vs Методы</h3>
+				<p>
+					Можно заметить, что того же результата можно достичь с помощью метода в выражении:
+				</p>
+				<div class="block">
+					<code class="highlight">
+						&lt;p&gt;{{ calculateBooksMessage() }}&lt;/p&gt;
+					</code>
+				</div>
+				<p class="block">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						// в компоненте<br>
+						methods: {<br>
+							calculateBooksMessage() {<br>
+								return this.author.books.length > 0 ? 'Да' : 'Нет'<br>
+							}<br>
+						}
+					</code>
+				</p>
+				<p>
+					Вместо вычисляемого свойства можно объявить эту же функцию в качестве метода. Для
+					отображаемого результата эти два подхода действительно одинаковы. Однако разница
+					заключается
+					в том, что вычисляемые свойства кэшируются на основе своих реактивных зависимостей.
+					Вычисляемое свойство будет пересчитываться только при изменении одной из своих
+					зависимостей.
+					А значит, пока не изменится author.books, любое число обращений к вычисляемому свойству
+					publishedBooksMessage будет немедленно возвращать ранее вычисленный результат, без
+					необходимости повторного запуска функции.
+				</p>
+				<p>
+					Это также означает, что следующее вычисляемое свойство никогда не будет обновляться,
+					потому
+					что Date.now() не является реактивной зависимостью:
+				</p>
+				<p class="block">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						computed: {<br>
+							// НЕ БУДЕТ РАБОТАТЬ<br>
+							now() {<br>
+							return Date.now()<br>
+							}<br>
+						}
+					</code>
+				</p>
+				<p>
+					Для сравнения, вызов метода будет всегда запускать функцию, когда будет перерисовка.
+				</p>
+				<p>
+					Зачем нужно кэширование? Представьте, что есть затратное вычисляемое свойство list,
+					которому
+					требуется проходить по большому массиву и выполнять различные вычисления. Далее, могут
+					быть
+					другие вычисляемые свойства, которые зависят от значения list. Без кэширования выполнять
+					геттер list потребуется во много раз больше, чем это нужно! Когда же необходимо обойтись
+					без
+					кэширования — стоит использовать methods.
+				</p>
+
+				<h3 class="main">Сеттер вычисляемого свойства</h3>
+				<p>
+					Вычисляемые свойства по умолчанию состоят только из геттера и поэтому доступны только
+					для
+					чтения. Но при необходимости можно также определить и сеттер:
+				</p>
+				<p class="block">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						// ...<br>
+						computed: {<br>
+						fullName: {<br>
+							// геттер (для получения значения)<br>
+							get() {<br>
+							return this.firstName + ' ' + this.lastName<br>
+							},<br>
+							// сеттер (при присвоении нового значения)<br>
+							set(newValue) {<br>
+							const names = newValue.split(' ')<br>
+							this.firstName = names[0]<br>
+							this.lastName = names[names.length - 1]<br>
+							}<br>
+						}<br>
+						}<br>
+						// ...
+					</code>
+				</p>
+				<p>
+					Теперь, при выполнении vm.fullName = 'John Doe' вызовется сеттер вычисляемого свойства и
+					значения vm.firstName и vm.lastName соответственно обновлены.
+				</p>
+
+				<h2 class="main">Методы-наблюдатели</h2>
+				<p>
+					Обычно вычисляемые свойства подходят в большинстве случаев, но иногда нужно отследить
+					сам
+					факт изменений. Поэтому Vue предоставляет ещё один способ реагировать на изменения
+					данных с
+					помощью опции watch. Это полезно, если необходимо выполнять асинхронные или затратные
+					операции в ответ на изменение данных.
+				</p>
+				<p>Например:</p>
+				<p class="block">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div id="watch-example"&gt;<br>
+							&lt;p&gt;<br>
+							Задайте вопрос, на который можно ответить «да» или «нет»:<br>
+							&lt;input v-model="question" /&gt;<br>
+							&lt;/p&gt;<br>
+							&lt;p&gt;{{ answer }}&lt;/p&gt;<br>
+						&lt;/div&gt;
+					</code>
+				</p>
+				<div class="block">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;!-- Поскольку уже существует обширная экосистема ajax-библиотек --&gt; <br>
+						&lt;!-- и библиотек функций общего назначения, ядро Vue может       --&gt; <br>
+						&lt;!-- оставаться маленьким и не изобретать их заново. Кроме того, --&gt; <br>
+						&lt;!-- это позволяет использовать только знакомые инструменты.     --&gt;
+					</code>
+				</div>
+					
+				<p class="block">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						<div id="watch-example"><br>
+							<p<br>
+							<Задайте вопрос, на который можно ответить «да» или «нет»:><br>
+							<input v-model="question" /><br>
+							</p<br>
+							<p>{{ answer }}</p> <br>
+						</div>
+					</code>
+				</p>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script>
+	const watchExampleVM = Vue.createApp({
+		data() {
+			return {
+				question: '',
+				answer: 'Вопросы обычно заканчиваются вопросительным знаком. ;-)'
+			}
+		},
+		watch: {
+			// при каждом изменении `question` эта функция будет запускаться
+			question(newQuestion, oldQuestion) {
+				if (newQuestion.indexOf('?') > -1) {
+					this.getAnswer()
+				}
+			}
+		},
+		methods: {
+			getAnswer() {
+				this.answer = 'Думаю...'
+				axios
+					.get('https://yesno.wtf/api')
+					.then(response => {
+						this.answer = response.data.answer
+					})
+					.catch(error => {
+						this.answer = 'Ошибка! Нет доступа к API. ' + error
+					})
+			}
+		}
+	}).mount('#watch-example')
+</script></code>
+				</div>
+
+
+				<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+				<footer>
+					<div class="jump">
+						<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+					</div>
+				</footer>
+				<script src="/js/html2pdf.bundle.min.js"></script>
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+				<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+
+			<h1 class="main">Директивы</h1>
+			<p>Директивы — специальные атрибуты с префиксом v-. В значении директивы ожидается одно выражение
+				JavaScript (за исключением v-for и v-on, о которых поговорим далее). Задачей директивы является
+				реактивное применение изменений к DOM, когда изменится значение выражения. Вернёмся к примеру из
+				введения:</p>
+			<p class="code">
+				<code class="highlight">&lt;p v-if="seen"&gt;Сейчас меня видно&lt;/p&gt;</code>
+			</p>
+			<p>В этом случае директива v-if будет удалять или вставлять элемент
+			<p> в зависимости от истинности значения выражения seen.</p>
+			<h2 class="main">Аргументы</h2>
+			<p>Некоторые директивы могут принимать «аргумент», отделяемый двоеточием от названия директивы. Например, директиву v-bind можно использовать для реактивного обновления атрибутов HTML:</p>
+			<p class="code">
+				<code class="highlight">&lt;a v-bind:href="url"&gt; ... &lt;/a&gt;</code>
+			</p>
+			<p>В этом случае href будет аргументом, указывающим директиве v-bind связать атрибут href элемента со
+				значением выражения url.</p>
+			<h2 class="main">Динамические аргументы</h2>
+			<p>Можно использовать выражение JavaScript в аргументе директивы, для этого потребуется обернуть его в
+				квадратные скобки:</p>
+			<p class="code">
+				<code class="highlight">&lt;a&gt; v-bind:[attributeName]="url"&gt; ... &lt;/a&gt;</code>
+			</p>
+			<p>
+				Здесь attributeName будет рассматриваться как выражение JavaScript, а его вычисленное значение
+				использоваться в качестве финального значения для аргумента. Например, если в экземпляре компонента
+				есть свойство данных attributeName со значением "href", то это будет эквивалентно привязке
+				v-bind:href.
+			</p>
+			<h2 class="main">Модификаторы</h2>
+			<p>
+				Модификаторы — специальные постфиксы, отделяемые точкой, которые обозначают, что директива должна
+				быть привязана каким-то особенным образом. Например, модификатор .prevent даёт указание директиве
+				v-on вызвать event.preventDefault() при обработке произошедшего события:
+			</p>
+			<p class="code">
+				<code class="highlight">&lt;form v-on:submit.prevent="onSubmit"&gt;...&lt;/form&gt;</code>
+			</p>
+
+		</div>
+	</div>
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

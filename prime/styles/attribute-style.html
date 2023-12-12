@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Связывание CSS-классов</h1>
+			<div class="content">
+				<h2 class="main">Объектный синтаксис</h2>
+				<p>
+					Для динамической установки или удаления CSS-классов в директиву :class (сокращение для
+					v-bind:class) можно передавать объект:
+				</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div :class="{ active: isActive }"&gt;&lt;/div&gt;
+					</code>
+				</p>
+				<p>
+					Синтаксис выше означает, что наличие класса active на элементе будет определяться истинностью
+					значения свойства isActive.
+				</p>
+				<p>
+					Подобным образом можно управлять несколькими классами, добавляя в объект и другие поля. Кроме
+					того, :class можно использовать совместно с обычным атрибутом class:
+				</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div class="static" :class="{ active: isActive, 'text-danger': hasError }"&gt;&lt;/div&gt;
+					</code>
+				</p>
+				<p>Если данные будут такими:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						data() { <br>
+							return { <br>
+							isActive: true,<br>
+							hasError: false<br>
+							}<br>
+						}
+					</code>
+				</p>
+				<p>То в результате получится:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div class="static active"&gt;&lt;/div&gt;
+					</code>
+				</p>
+				<p>Классы будут обновлены при изменениях isActive или hasError. Например, hasError изменится в true
+					и значение атрибута class станет "static active text-danger".</p>
+				<p>Объект необязательно указывать инлайн прямо в шаблоне:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div :class="classObject"&gt;&lt;/div&gt;
+					</code>
+				</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						data() {<br>
+							return {<br>
+							classObject: {<br>
+								active: true,<br>
+								'text-danger': false<br>
+							}<br>
+							}<br>
+						}
+					</code>
+				</p>
+				<p>Результат будет таким же. Также можно использовать вычисляемые свойства, которые будут возвращать
+					итоговый объект — очень распространённый и мощный приём:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div :class="classObject"&gt;&lt;/div&gt;
+					</code>
+				</p>
+				<br> <br>
+				<p class="code">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						data() {<br>
+							return {<br>
+							isActive: true,<br>
+							error: null<br>
+							}<br>
+						},<br>
+						computed: {<br>
+							classObject() {<br>
+							return {<br>
+								active: this.isActive && !this.error,<br>
+								'text-danger': this.error && this.error.type === 'fatal'<br>
+							}<br>
+							}<br>
+						}
+					</code>
+				</p>
+
+				<h2 class="main">Синтаксис с массивом</h2>
+				<p>Можно передать массив в :class, чтобы применить список классов:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div :class="classObject"&gt;&lt;/div&gt;
+					</code>
+				</p> <br>
+				<div class="block" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						data() { <br>
+							return {<br>
+							activeClass: 'active',<br>
+							errorClass: 'text-danger'<br>
+							}<br>
+						}
+					</code>
+				</div>
+				<p>В результате получим:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div class="active text-danger"&gt;&lt;/div&gt;
+					</code>
+				</p>
+				<p>Переключать классы в массиве, в зависимости от некоторого условия, можно с помощью условного
+					оператора в форме тернарного выражения:</p>
+				<p class="code">
+					<code class="highlight">
+						&lt;div :class="[isActive ? activeClass : '', errorClass]"&gt;&lt;/div&gt;
+					</code>
+				</p>
+				<p>К элементу будет всегда добавляться errorClass, но activeClass — только в случае истинности
+					isActive.</p>
+				<p>Однако, такая запись начинает выглядеть слегка громоздко, особенно если есть несколько классов,
+					задаваемых по условию. Поэтому возможно использовать и смешанный синтаксис:</p>
+				<p class="code">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div :class="[{ active: isActive }, errorClass]"&gt;&lt;/div&gt;
+					</code>
+				</p>
+
+				<h2 class="main">Использование с компонентами</h2>
+				<p>При использовании атрибута class на пользовательском компоненте с одним корневым элементом,
+					классы будут добавлены к этому корневому элементу. Существующие классы на этом элементе
+					останутся и не будут перезаписаны.</p>
+				<p>Возьмём, к примеру, такой компонент:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						const app = Vue.createApp({})<br>
+						<br>
+							app.component('my-component', {<br>
+							template: '<p class="foo bar">Привет</p>'<br>
+						})
+					</code>
+				</p>
+				<p>Если добавить несколько классов на компонент:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div id="app"&gt; <br>
+							&lt;my-component class="baz boo"&gt;&lt;/my-component&gt; <br>
+						&lt;/div&gt;
+					</code>
+				</p>
+				<p>То в результате отрисовки получим:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight">
+						&lt;p class="foo bar baz boo&gt;Привет&lt;/p&gt;
+					</code>
+				</p>
+				<p>То же самое справедливо для привязок классов:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;my-component :class="{ active: isActive }"&gt;&lt;/my-component&gt;
+					</code>
+				</p>
+				<p>Если isActive истинно, то результирующий HTML будет:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;p class="foo bar active"&gt;Привет&lt;/p&gt;
+					</code>
+				</p>
+				<p>Если у компонента несколько корневых элементов, то потребуется определить какой из них будет
+					получать эти классы. Это реализуется добавлением свойства $attrs на элемент:</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;div id="app"&gt;
+							&lt;my-component class="baz">&lt;/my-component&gt;
+						&lt;/div&gt;
+					</code>
+				</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						const app = Vue.createApp({})<br>
+						<br>
+						app.component('my-component', {<br>
+						template: `<br>
+							&lt;p :class="$attrs.class"&gt;Привет!&lt;/p&gt;<br>
+							&lt;span&gt;Это дочерний компонент&lt;/span&gt;<br>
+						`<br>
+						})
+					</code>
+				</p>
+			</div>
+
+
+			<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+			<footer>
+				<div class="jump">
+					<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+				</div>
+			</footer>
+			<script src="/js/html2pdf.bundle.min.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+			<script src="../../../../../js/metrika.js?v=1"></script>
+		</body>
+		
+		</html>

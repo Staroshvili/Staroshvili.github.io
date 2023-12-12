@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Фильтры</h1>
+			<p>
+				Для распространённых задач форматирования текста во Vue используются фильтры. Они находят своё
+				применение в двух местах: в mustache-интерполяциях и в выражениях v-bind. Фильтры добавляются в конце
+				выражения JavaScript и отделяются вертикальной чертой:
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;!-- mustache --&gt; <br>
+        {{ message | capitalize }}<br>
+        <br>
+        &lt;!-- v-bind --&gt;<br>
+        &lt;div v-bind:id="rawId | formatId">&lt;/div&gt;</code>
+			</p>
+			<p>Вы можете определить локальные фильтры в опциях компонента:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">filters: {<br>
+        capitalize: function (value) {<br>
+          if (!value) return ''<br>
+          value = value.toString()<br>
+          return value.charAt(0).toUpperCase() + value.slice(1)<br>
+        }<br>
+      }</code>
+			</p>
+			<p>или определить фильтр глобально перед созданием экземпляра Vue:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">Vue.filter('capitalize', function (value) {<br>
+        if (!value) return ''<br>
+        value = value.toString()<br>
+        return value.charAt(0).toUpperCase() + value.slice(1)<br>
+      })<br>
+      <br>
+      new Vue({<br>
+        // ...<br>
+      })</code>
+			</p>
+			<p>Когда у глобального фильтра такое же имя как и у локального, то локальный фильтр будет приоритетнее.</p>
+			<p>Функция фильтра всегда принимает значение выражения (результат предыдущей цепочки) в качестве первого
+				аргумента. В этом примере функция фильтра capitalize получит значение message в качестве аргумента.</p>
+			<p>Фильтры можно объединять в цепочки:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight"
+					data-lang="html">{{ message | filterA | filterB }}</code>
+			</p>
+			<p>В этом случае filterA, определённый с одним аргументом, получит значение message, а затем функция filterB
+				будет вызвана с результатом filterA, переданным единственным аргументом в filterB.</p>
+			<p>Фильтры являются JavaScript-функциями, и потому могут принимать параметры:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight"
+					data-lang="html">{{ message | filterA('arg1', arg2) }}</code>
+			</p>
+			<p>В данном случае filterA определяется как функция с тремя аргументами. Значение message будет передано
+				первым аргументом. Простая строка 'arg1' будет передана в filterA вторым аргументом, а значение
+				выражения arg2 — третьим.</p>
+		</div>
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

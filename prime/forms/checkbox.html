@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Использование v-model с компонентами</h1>
+			<p>
+				Встроенные в HTML элементы ввода не всегда соответствуют потребностям. К счастью, компоненты Vue
+				позволяют создавать собственные аналоги с полностью настраиваемым поведением. Эти элементы тоже могут
+				работать с директивой v-model!
+			</p>
+			<p>Пользовательские события также могут использоваться для создания нестандартных элементов ввода, которые
+				будут работать вместе с v-model. Не забывайте, что:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;input v-model="searchText" / &gt;</code>
+			</p>
+			<p>выполняет то же самое, что и:</p>
+			<code class="p" data-file="App.vue">
+				<code class="highlight" data-module="highlight"
+					data-lang="html">&lt;input :value="searchText" @input="searchText = $event.target.value" / &gt;</code>
+			</code>
+			<p>Использование v-model на компоненте будет выполнять следующее:</p>
+			<code class="p" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html"><custom-input
+		:model-value="searchText"
+		@update:model-value="searchText = $event"
+	  ></custom-input></code>
+			</code>
+			<p>Однако для того, чтобы это всё заработало, input внутри компонента должен:</p><br>
+			<p>1. Привязывать к значению атрибута value входной параметр modelValue</p>
+			<p>2. При событии input генерировать событие update:modelValue с новым значением</p><br>
+			<p>Как получится в итоге:</p>
+			<code class="p" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">app.component('custom-input', { <br>
+		props: ['modelValue'], <br>
+		emits: ['update:modelValue'], <br>
+		template: ` <br>
+		&lt;input <br>
+			:value="modelValue" <br>
+			@input="$emit('update:modelValue', $event.target.value)" <br>
+		  /&gt; <br>
+		`
+	  })</code>
+			</code>
+			<p>Теперь такой компонент будет прекрасно работать с v-model:</p>
+			<code class="p" data-file="App.vue">
+				<code class="highlight" data-module="highlight"
+					data-lang="html">&lt;custom-input v-model="searchText"&gt;&lt;/custom-input&gt;</code>
+			</code>
+			<p>Другим способом реализации v-model в компоненте будет использование вычисляемых свойств и их возможностей
+				определить геттер и сеттер. Метод get должен возвращать свойство modelValue, а метод set генерировать
+				соответствующее событие:</p>
+			<code class="p" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">app.component('custom-input', { <br>
+		props: ['modelValue'], <br>
+		emits: ['update:modelValue'], <br>
+		template: ` <br>
+		&lt;input v-model="value"&gt; <br>
+		`,<br>
+		computed: {<br>
+		  value: {<br>
+			get() {<br>
+			  return this.modelValue<br>
+			},<br>
+			set(value) {<br>
+			  this.$emit('update:modelValue', value)<br>
+			}<br>
+		  }<br>
+		}<br>
+	  })</code>
+			</code>
+		</div>
+	</div>
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

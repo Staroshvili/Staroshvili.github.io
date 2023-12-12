@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Передача данных в дочерние компоненты через входные параметры</h1>
+			<p>
+				Ранее создавался компонент для записи блога. Но проблема в том, что этот компонент бесполезен, если не
+				будет возможности передавать ему данные, такие как заголовок и содержимое записи блога, которую нужно
+				показать. Для этого и нужны входные параметры.
+			</p>
+			<p>
+				Входные параметры — пользовательские атрибуты, которые указываются на компоненте. Чтобы передавать
+				заголовок в компонент записи блога, нужно определить его в списке входных параметров, которые принимает
+				компонент, с помощью опции props:
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">const app = Vue.createApp({}) <br>
+					<br>
+		app.component('blog-post', {<br>
+		  props: ['title'],<br>
+		  template: `&lt;h4&gt;{{ title }}&lt;/h4&gt;`<br>
+		})
+		<br>
+		app.mount('#blog-post-demo')</code>
+			</p>
+			<p>При передаче значения в атрибут входного параметра, оно станет свойством данного экземпляра. Значение
+				этого свойства доступно в шаблоне, как и любое другое свойство компонента.</p>
+			<p>Компонент может принимать столько входных параметров, сколько потребуется, и по умолчанию любое значение
+				может передаваться в любой входной параметр.</p>
+			<p>После объявления входного параметра можно передавать данные в него через пользовательский атрибут,
+				например:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					&lt;div id="blog-post-demo" class="demo"&gt; <br>
+						&lt;blog-post title="My journey with Vue"&gt;&lt;/blog-post&gt;<br>
+						&lt;blog-post title="Blogging with Vue"&gt;&lt;/blog-post&gt;<br>
+						&lt;blog-post title="Why Vue is so fun"&gt;&lt;/blog-post&gt;<br>
+					&lt;/div&gt;
+				</code>
+			</p>
+			<p>Скорее всего в типичном приложении наверняка будет массив записей в свойстве data:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">const App = {
+		data() { <br>
+		  return {<br>
+			posts: [<br>
+			  { id: 1, title: 'My journey with Vue' },<br>
+			  { id: 2, title: 'Blogging with Vue' },<br>
+			  { id: 3, title: 'Why Vue is so fun' }<br>
+			]<br>
+		  }<br>
+		}<br>
+	  }<br>
+	  <br>
+	  const app = Vue.createApp(App)<br>
+	  <br>
+	  app.component('blog-post', {<br>
+		props: ['title'],<br>
+		template: `&lt;h4&gt;{{ title }}&lt;/h4&gt;`<br>
+	  })<br>
+	  <br>
+	  app.mount('#blog-posts-demo')</code>
+			</p>
+			<p>А значит для каждого из элементов массива потребуется отрисовать свой компонент :</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html"><div id="blog-posts-demo">
+		<blog-post
+		  v-for="post in posts"
+		  :key="post.id"
+		  :title="post.title"
+		></blog-post>
+	  </div></code>
+			</p>
+			<p>Как видно в примере, можно использовать v-bind для динамической передачи входных параметров. Это полезно,
+				когда заранее неизвестно точное содержимое для отрисовки.</p>
+
+		</div>
+	</div>
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

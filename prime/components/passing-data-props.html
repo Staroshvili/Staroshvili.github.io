@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Прослушивание событий из дочерних компонентов в родительских компонентах</h1>
+			<p>
+				При доработках компонента <blog-post> некоторым возможностям может потребоваться передавать данные
+					обратно в родительский компонент. Например, позволить увеличивать размер текста записей блога для
+					улучшения доступности, оставляя остальную часть страницы с размером текста по умолчанию.
+			</p>
+			<p>
+				Для этого добавим свойство postFontSize в родительском компоненте:
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">const App = { <br>
+		data() {<br>
+		  return {<br>
+			posts: [<br>
+			  /* ... */<br>
+			],<br>
+			postFontSize: 1<br>
+		  }<br>
+		}<br>
+	  }</code>
+			</p>
+			<p>
+				И воспользуемся им в шаблоне чтобы установить размер шрифта для всех записей блога:
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html"><div id="blog-posts-events-demo">
+		<div :style="{ fontSize: postFontSize + 'em' }">
+		  &lt;blog-post  
+			v-for="post in posts" 
+			:key="post.id" 
+			:title="post.title"&gt; &lt;/blog-post&gt;
+		</div>
+	  </div></code>
+			</p>
+			<p>Теперь перед содержимым каждой записи блога добавим кнопку для увеличения текста:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">app.component('blog-post', { <br>
+		props: ['title'],<br>
+		template: `<br>
+		  &lt;div class="blog-post"&gt;<br>
+			&lt;h4&gt;{{ title }}&lt;/h4&gt;<br>
+			&lt;button&gt;<br>
+			  Увеличить размер текста<br>
+			&lt;/button&gt;<br>
+		  &lt;/div&gt;<br>
+		`<br>
+	  })</code>
+			</p>
+			<p>Проблема пока в том, что эта кнопка ничего не делает:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;button&gt;
+		Увеличить размер текста
+	  &lt;/button&lt;</code>
+			</p>
+			<p>При нажатии на кнопку нужно каким-то образом сообщать родительскому компоненту, что требуется увеличить
+				размер текста для всех записей блога. Для решения этой проблемы, экземпляры компонента предоставляют
+				собственную систему событий. Родительский компонент может прослушивать любые события на экземпляре
+				дочернего компонента с помощью v-on или @, аналогично отслеживанию нативных событий DOM:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight"
+					data-lang="html">&lt;blog-post ... @enlarge-text="postFontSize += 0.1"&gt;&lt;/blog-post&gt;</code>
+			</p>
+			<p>А чтобы сгенерировать событие, дочерний компонент может воспользоваться встроенным методом $emit,
+				передавая в него аргументом имя события:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;button @click="$emit('enlargeText')"&gt;
+		Увеличить размер текста
+	  &lt;/button&gt;</code>
+			</p>
+			<p>Благодаря прослушиванию события @enlarge-text="postFontSize += 0.1" в родительском компоненте, получится
+				отследить его и обновить postFontSize новым значением.</p>
+			<p>Все генерируемые компонентом события можно указать в опции emits:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">app.component('blog-post', { <br>
+		props: ['title'],<br>
+		emits: ['enlargeText']<br>
+	  })</code>
+			</p>
+			<p>Это позволит проверять все события, генерируемые компонентом, и при необходимости валидировать их.</p>
+
+			<h3 class="main">Передача данных вместе с событием</h3>
+			<p>Иногда полезнее вместе с событием отправить какие-либо данные. Например, если решим, что компонент
+				<blog-post> будет отвечать за то, насколько следует увеличить текст. Тогда для передачи этого значения
+					можно использовать второй параметр $emit:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;button @click="$emit('enlargeText', 0.1)"&gt;
+		Увеличить размер текста
+	  &lt;/button&gt;</code>
+			</p>
+			<p>Теперь, при прослушивании события в родительском компоненте, доступ к этому значению можно будет получить
+				через специальную переменную $event:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight"
+					data-lang="html">&lt;blog-post ... @enlarge-text="postFontSize += $event"&gt;&lt;/blog-post&gt;</code>
+			</p>
+			<p>А если обработчик события будет указан именем метода:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight"
+					data-lang="html">&lt;blog-post ... @enlarge-text="onEnlargeText"&gt;&lt;/blog-post&gt;</code>
+			</p>
+			<p>То это значение будет передано в него первым аргументом:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">methods: { <br>
+		onEnlargeText(enlargeAmount) {<br>
+		  this.postFontSize += enlargeAmount<br>
+		}<br>
+	  }</code>
+			</p>
+
+			<h3 class="main">Использование v-model на компонентах</h3>
+			<p>А использование v-model на компонентах мы уже рассматривали в этой теме: <a
+					href="../forms/checkbox.html">Читать</a></p>
+
+		</div>
+	</div>
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Циклы</h1>
+				<h2 class="main">Перебор массивов</h2>
+				<p>Vue позволяет формировать теги в цикле. Это делается с помощью специальнойдирективы <code class="code inline">v-for</code>. Давайте посмотрим,как она работает для массивов. Для этого сделаем следующий массив:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						data() { <br>
+							&nbsp;	return { <br>
+								&nbsp;&nbsp;		arr: ['a', 'b', 'c'], <br>
+								&nbsp;	} <br>
+						}
+					</code>
+				</p>
+				<p>
+					Давайте выведем каждый элемент
+					этого массива в отдельном абзаце.
+					Для этого в представлении
+					для начала сделаем абзац:
+				</p>
+				<p class="code">
+					<code class="highlight"
+						>&lt;template&gt; <br>
+						&nbsp;	&lt;p&gt;&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+				<p>Теперь напишем нашему абзацу директиву <code class="code inline">v-for</code>. Значением этой директивы следует указать имя перебираемого массива и переменную, в которую последовательно будут попадать элементы этого массива. В нашем случае имя массива будет <code class="code inline">arr</code>, а для переменной мы придумаем имя <code class="code inline">elem</code>:
+				</p>
+				<p class="block">
+					<code class="highlight">
+						&lt;template&gt; <br>
+						&nbsp;	&lt;p v-for="elem in arr"&gt;&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+				<p>В результате наш абзац повторится столько раз, сколько элементовв нашем массиве. Давайте будем выводить перебираемые элементы в текстенаших абзацев:
+				</p>
+				<p class="block">
+					<code class="highlight">
+						&lt;template&gt; <br>
+						&nbsp;	&lt;p v-for="elem in arr"&gt;{{ elem }}&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+
+				<h2 class="main">Получение ключей при переборе массивов в Vue</h2>
+				<p>Иногда кроме элементов массива, мы хотели бы получить доступ еще и к ключам. Для этого используется следующий расширенный синтаксис:</p>
+				<p class="code">
+					<code class="highlight">
+						&lt;template&gt; <br>
+					&nbsp;	&lt;p v-for="(elem, key) in arr"&gt; <br>
+					&nbsp;	{{ key }} {{ elem }} <br>
+					&nbsp;	&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+				<p>С ключами при выводе можно делать различные операции. К примеру, сделаем так, чтобы номера начиналисьс единицы:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						&lt;template&gt; <br>
+						&nbsp;	&lt;p v-for="(elem, key) in arr"&gt; <br>
+						&nbsp;	{{ key + 1 }} {{ elem }} <br>
+						&nbsp;	&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+
+				<h2 class="main">Перебор массива объектов</h2>
+				<p>Научимся теперь перебирать массив объектов. Посмотрим на примере. Пусть есть следующий массив:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						data() { <br>
+							&nbsp;return { <br>
+								&nbsp;&nbsp;users: [ <br>
+									{ <br>
+										&nbsp;&nbsp;	name: 'name1', <br>
+										&nbsp;&nbsp;			surn: 'surn1', <br>
+									}, <br>
+									{ <br>
+										&nbsp;&nbsp;		name: 'name2', <br>
+										&nbsp;&nbsp;		surn: 'surn2', <br>
+									}, <br>
+									{ <br>
+										&nbsp;&nbsp;		name: 'name3',<br>
+										&nbsp;&nbsp;		surn: 'surn3',<br>
+										&nbsp;		&nbsp;&nbsp;			},<br>
+										&nbsp;&nbsp;	]<br>
+										&nbsp;		}<br>
+						}
+					</code>
+				</p>
+				<p>Давайте переберем наш массив циклом и для каждого юзера в отдельном абзаце будем выводить его имя и фамилию:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						&lt;template&gt; <br>
+						&nbsp;		&lt;p v-for="user in users"&gt; <br>
+						&nbsp;&nbsp;	{{ user.name }} <br>
+						&nbsp;&nbsp;	{{ user.surn }} <br>
+						&nbsp;&lt;/p&gt;<br>
+						&lt;/template&gt;
+					</code>
+				</p>
+
+				<h2 class="main">Перебор группы тегов в Vue</h2>
+				<p>
+					Иногда нам нужно формировать в цикле
+					сразу на группу тегов. В этом
+					случае мы можем объединить их
+					общим родителем и применить
+					цикл к нему:
+				</p>
+				<p class="code">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;template&gt; <br>
+						&nbsp;&lt;div v-for="elem in arr"&gt; <br>
+						&nbsp;&nbsp;	&lt;p&gt;{{ elem }}&lt;/p&gt; <br>
+						&nbsp;&nbsp;	&lt;hr&gt;<br>
+						&nbsp;	&lt;/div&gt;<br>
+						&lt;/template&gt;
+					</code>
+				</p>
+				<p>
+					Иногда нам не хотелось бы объединять теги
+					общим родителем. В этом случае
+					их можно объединить тегом
+					<code class="code inline">template</code>, применив цикл
+					к этому тегу. Этот тег объединяет
+					другие теги, но не попадает
+					в итоговую верстку.
+					Давайте попробуем:
+				</p>
+				<p class="block">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;template&gt; <br>
+						&nbsp;&lt;template v-for="elem in arr"&gt; <br>
+						&nbsp;&nbsp;	&lt;p&gt;{{ elem }}&lt;/p&gt;
+						&nbsp;&nbsp;	&lt;hr&gt; <br>
+						&nbsp;&lt;/template&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+
+				<h2 class="main">Условия в циклах</h2>
+				<p>
+					При переборе элементов циклами
+					можно накладывать условия.
+					Но директивы <code class="code inline">v-for</code> и <code class="code inline">v-if</code>
+					нужно писать на разных тегах,
+					иначе будет конфликт. Во избежания
+					конфликта директиву <code class="code inline">v-for</code>
+					применяют к тегу <code class="code inline">template</code>,
+					а директиву <code class="code inline">v-if</code> - непосредственно
+					к вставляемому тегу.
+				</p>
+				<p>
+					Давайте посмотрим на примере.
+					Пусть у нас есть следующий массив:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						data() { <br>
+							&nbsp;	return { <br>
+								&nbsp;&nbsp;		arr: [1, 2, 3, 4, 5],<br>
+								&nbsp;	} <br>
+						}
+					</code>
+				</p>
+				<p>
+					Переберем этот массив циклом:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						&lt;template&gt; <br>
+						&nbsp;	&lt;ul&gt; <br>
+						&nbsp;&nbsp;		&lt;li v-for="elem in arr"&gt; <br>
+						&nbsp;&nbsp;&nbsp;		{{ elem }} <br>
+						&nbsp;&nbsp;		&lt;/li&gt; <br>
+						&nbsp;	&lt;/ul&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+				<p>
+					А теперь наложим условие на
+					показываемые элементы:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						&lt;template&gt; <br>
+						&nbsp;	&lt;ul&gt; <br>
+								&lt;template v-for="elem in arr"&gt; <br>
+								&nbsp;&nbsp;			&lt;li v-if="elem % 2 === 0"&gt; <br>
+								&nbsp;&nbsp;&nbsp;			{{ elem }} <br>
+								&nbsp;&nbsp;			&lt;/li&gt; <br>
+								&lt;/template&gt; <br>
+								&nbsp;	&lt;/ul&gt; <br>
+						&lt;/template&gt; 
+					</code>
+				</p>
+
+				<h2 class="main">Атрибут key</h2>
+				<p>
+					При обновлении Vue списка элементов,
+					отрисованного директивой <code class="code inline">v-for</code>, по умолчанию
+					используется стратегия обновления "на месте".
+					Если порядок элементов массива или объекта
+					изменился, Vue не станет перемещать элементы DOM,
+					а просто обновит каждый элемент "на месте",
+					чтобы он отображал новые данные по соответствующему индексу.
+				</p>
+				<p>
+					Чтобы подсказать Vue, как определять идентичность
+					каждого элемента, и, таким образом, переиспользовать
+					и упорядочивать существующие элементы, необходимо
+					указать уникальный атрибут <code class="code inline">key</code> для каждого элемента.
+				</p>
+				<p>
+					Без ключей Vue использует алгоритм, который минимизирует
+					перемещения элементов и по-максимуму будет стараться
+					изменять/переиспользовать элементы одного типа.
+					При использовании ключей элементы будут переупорядочиваться
+					в соответствии с изменением порядка следования ключей,
+					а элементы, чьи ключи уже отсутствуют,
+					будут всегда удаляться/уничтожаться.
+				</p>
+				<p>
+					Рекомендуется всегда указывать атрибут <code class="code inline">key</code>
+					с <code class="code inline">v-for</code>, кроме случаев когда итерируемое содержимое
+					DOM простое, или когда сознательно полагаетесь
+					на стратегию обновления по умолчанию
+					для улучшения производительности.
+				</p>
+				<p>
+					Как правило вопрос добавления ключей
+					встает при переборе массива
+					объектов. В этом случае одним
+					из ключей объекта является уникальное
+					поле, например, <code class="code inline">id</code>:
+				</p>
+				<div class="block">
+					<code class="highlight" data-module="highlight" data-lang="javascript">
+						data() { <br>
+							&nbsp;		return { <br> 
+								&nbsp;&nbsp;	users: [ <br>
+								&nbsp;&nbsp;&nbsp;		{ <br> 
+									&nbsp;&nbsp;&nbsp;&nbsp;			id: 1, <br>
+									&nbsp;&nbsp;&nbsp;&nbsp;			name: 'name1', <br>
+									&nbsp;&nbsp;&nbsp;&nbsp;			surn: 'surn1', <br>
+									&nbsp;&nbsp;&nbsp;	}, <br>
+									{ <br>
+										&nbsp;&nbsp;&nbsp;&nbsp;			id: 2, <br>
+										&nbsp;&nbsp;&nbsp;&nbsp;			name: 'name2', <br>
+										&nbsp;&nbsp;&nbsp;&nbsp;		surn: 'surn2', <br>
+										&nbsp;&nbsp;&nbsp;		}, <br>
+									{ <br>
+										&nbsp;&nbsp;&nbsp;&nbsp;				id: 3, <br>
+										&nbsp;&nbsp;&nbsp;&nbsp;				name: 'name3', <br>
+										&nbsp;&nbsp;&nbsp;&nbsp;				surn: 'surn3', <br>
+										&nbsp;&nbsp;&nbsp;			}, <br>
+									&nbsp;&nbsp;			] <br>
+								&nbsp;		} <br>
+						}
+					</code>
+				</div>
+				<p>
+					Давайте переберем приведенный массив циклом,
+					указав соответствующие ключи:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						&lt;template&gt; <br>
+						&nbsp;				&lt;p v-for="user in users" :key="user.id"&gt; <br>
+						&nbsp;&nbsp;				{{ user.name }} <br>
+						&nbsp;&nbsp;				{{ user.surn }} <br>
+						&nbsp;			&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+
+				<h2 class="main">Перебор объектов</h2>
+				<p>
+					Объекты также перебираются с помощью
+					директивы <code class="code inline">v-for</code>. Давайте
+					посмотрим, как это делается.
+					Пусть у нас есть следующий
+					объект:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						data() { <br>
+							&nbsp;		return { <br>
+								&nbsp;&nbsp;			obj: {a: 1, b: 2, c: 3}, <br>
+								&nbsp;			} <br>
+						}
+					</code>
+				</p>
+				<p>
+					Переберем этот объект циклом
+					и выведем его элементы:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						&lt;template&gt; <br>
+						&nbsp;				&lt;p v-for="elem in obj"&gt; <br>
+						&nbsp;&nbsp;					{{ elem }} <br>
+						&nbsp;					&lt;/p&gt; <br>
+						&lt;/template&gt; 
+					</code>
+				</p>
+				<p>
+					А теперь выведем и ключи,
+					и элементы:
+				</p>
+				<p class="code" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;template&gt; <br>
+						&nbsp;			&lt;p v-for="(elem, key) in obj"&gt;  <br>
+						&nbsp;&nbsp;				{{ key }} {{ elem }} <br>
+						&nbsp;			&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+				<p>
+					А теперь выведем еще и порядковые
+					номера элементов в объекте:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						&lt;template&gt; <br>
+						&nbsp;				&lt;p v-for="(elem, key, index) in obj"&gt; <br>
+						&nbsp;&nbsp;				{{ index }} <br>
+						&nbsp;&nbsp;					{{ key }} <br>
+						&nbsp;&nbsp;					{{ elem }} <br>
+						&nbsp;				&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+
+				<h2 class="main">Цикл в диапазоне</h2>
+				<p>
+					Можно сделать так, чтобы цикл повторился
+					заданное количество раз. Это делается
+					следующим образом:
+				</p>
+				<p class="block">
+					<code class="highlight">
+						&lt;template&gt; <br>
+						&nbsp;			&lt;p v-for="num in 10"&gt; <br>
+						&nbsp;&nbsp;				{{ num }} <br> 
+						&nbsp;			&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+
+				<h2 class="main">Реактивность массивов в Vue</h2>
+				<p>
+					Реактивность срабатывает даже при изменениях
+					массивов, выводимых через <code class="code inline">v-for</code>.
+					Давайте для примера сделаем так, чтобы
+					по нажатию на кнопку в массив реактивно
+					добавлялся новый элемент и изменения
+					мгновенно происхоили и на экране.
+				</p>
+				<p>
+					Давайте реализуем описанное.
+					Пусть у нас в есть массив:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						data() { <br>
+							&nbsp;			return {  <br>
+								&nbsp;&nbsp;				arr: ['a', 'b', 'c'], <br>
+								&nbsp;			} <br>
+						}
+					</code>
+				</p>
+				<p>
+					Выведем элементы этого
+					массива в цикле:
+				</p>
+				<p class="code">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;template&gt; <br>
+						&nbsp;			&lt;p v-for="elem in arr"&gt; <br>
+						&nbsp;&nbsp;				{{ elem }} <br>
+						&nbsp;			&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+				<p>
+					Сделаем кнопку, по нажатию на которую
+					в массив будет добавляться новый элемент:
+				</p>
+				<div class="block" data-file="App.vue">
+					<code class="highlight" data-module="highlight" data-lang="html">
+						&lt;template&gt; <br>
+						&nbsp;					&lt;p v-for="elem in arr"&gt; <br>
+						&nbsp;&nbsp;						{{ elem }} <br>
+						&nbsp;					&lt;/p&gt; <br>
+						&nbsp;				&lt;button @click="add"&gt;add&lt;/button&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</div>
+				<p>
+					Реализуем соответствующий метод:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						methods: { <br>
+							&nbsp;							add: function() { <br>
+								&nbsp;&nbsp;							this.arr.push('xxx'); <br>
+								&nbsp;						} <br>
+						}
+					</code>
+				</p>
+
+				<h2 class="main">Перебор массива объектов в Vue</h2>
+				<p>
+					Научимся теперь перебирать массив
+					объектов. Посмотрим на примере.
+					Пусть есть следующий массив:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						data() { <br>
+							&nbsp;							return { 
+								&nbsp;&nbsp;								users: [<br>
+								&nbsp;&nbsp;&nbsp;								{<br>
+									&nbsp;&nbsp;&nbsp;&nbsp;						name: 'name1',<br>
+									&nbsp;&nbsp;&nbsp;&nbsp;							surn: 'surn1',<br>
+									&nbsp;&nbsp;&nbsp;		},<br>
+									&nbsp;&nbsp;&nbsp;				{<br>
+										&nbsp;&nbsp;&nbsp;&nbsp;										name: 'name2',<br>
+										&nbsp;&nbsp;&nbsp;&nbsp;										surn: 'surn2',<br>
+										&nbsp;&nbsp;&nbsp;		},<br>
+										&nbsp;&nbsp;&nbsp;				{<br>
+											&nbsp;&nbsp;&nbsp;&nbsp;			name: 'name3',<br>
+											&nbsp;&nbsp;&nbsp;&nbsp;	surn: 'surn3',<br>
+											&nbsp;&nbsp;&nbsp;	},<br>
+											&nbsp;&nbsp;		]<br>
+											&nbsp;			}<br>
+						}
+					</code>
+				</p>
+				<p>
+					Давайте переберем наш массив циклом
+					и для каждого юзера в отдельном абзаце
+					будем выводить его имя и фамилию:
+				</p>
+				<p class="code">
+					<code class="highlight">
+						&lt;template&gt;
+						&nbsp;					&lt;p v-for="user in users"&gt; <br>
+						&nbsp;&nbsp;						{{ user.name }} <br>
+						&nbsp;&nbsp;						{{ user.surn }} <br>
+						&nbsp;					&lt;/p&gt; <br>
+						&lt;/template&gt;
+					</code>
+				</p>
+
+			<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+			<footer>
+				<div class="jump">
+					<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+				</div>
+			</footer>
+			<script src="/js/html2pdf.bundle.min.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+			<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

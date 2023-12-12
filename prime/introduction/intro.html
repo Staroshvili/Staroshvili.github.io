@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<!-- данные, сохраняемые в pdf -->
+		<div class="container">
+			<h1 class="main">Введение в фреймворк Vue</h1>
+
+			<h2 class="main">Что такое Vue.js?</h2>
+			<p>
+				Vue (произносится /vjuː/, примерно как view) — это прогрессивный фреймворк
+				для создания пользовательских интерфейсов. В отличие от
+				фреймворков-монолитов, Vue создан пригодным для постепенного внедрения. Его
+				ядро в первую очередь решает задачи уровня представления (view), что
+				упрощает интеграцию с другими библиотеками и существующими проектами. С
+				другой стороны, Vue полностью подходит и для создания сложных одностраничных
+				приложений (SPA, Single-Page Applications).
+			</p>
+
+
+			<h2 class="main">Установка фреймворка Vue</h2>
+
+			<p>
+				Фреймворк рекомендовано устанавливать
+				через npm. Для начала обязательно убедитесь,
+				что на вашем компьютере установлена версия
+				Node.js не ниже <code class="number inline">16</code>. Установите или
+				обновите, если необходимо. Далее вам нужно
+				создать папку, открыть ее в терминале и
+				выполнить следующую команду:
+			</p>
+
+			<p class="code">
+				<code class="highlight">npm init vue@latest</code>
+			</p>
+			<p>
+				В процессе установки вы должны указать
+				название проекта, а также можете выбрать
+				дополнительный инструментарий. Можете
+				пока отказаться, выбрав No для инструментов,
+				их всегда можно добавить позже.
+			</p>
+			<p>
+				После установки, для запуска фреймворка,
+				вам нужно зайти в папку с вашим созданным
+				проектом:
+			</p>
+			<p class="code">
+				<code class="highlight">cd название проекта</code>
+			</p>
+			<p>
+				Затем выполнить следующую команду,
+				при дальнейших запусках выполнять ее
+				не нужно:
+			</p>
+			<p class="code">
+				<code class="highlight">npm install</code>
+			</p>
+			<p>
+				Далее для запуска в режиме разработки
+				выполните:
+			</p>
+			<p class="code">
+				<code class="highlight">npm run dev</code>
+			</p>
+			<p>
+				Появившийся в терминале линк, вы можете теперь
+				открывать в браузере - по этому адресу
+				и будет отображаться ваше VUE-приложение
+			</p>
+		</div>
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

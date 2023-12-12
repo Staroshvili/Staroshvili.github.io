@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Работа с методами и событиями</h1>
+			<h2 class="main">Прослушивание событий</h2>
+			<p>
+				Можно использовать директиву v-on, которую обычно сокращают до символа @, чтобы прослушивать
+				события DOM и запускать какой-нибудь JavaScript-код по их наступлению. Используется как
+				v-on:click="methodName" или в сокращённом виде @click="methodName".
+			</p>
+			<p>
+				Например:
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					<div id="basic-event">
+						&lt;button @click="counter += 1"&gt;Добавить 1&lt;/button&gt; <br>
+						&lt;p&gt;Кнопка выше была нажата {{ counter }} раз&lt;/p&gt;
+					</div>
+				</code>
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					Vue.createApp({ <br>
+						data() {<br>
+						return {<br>
+							counter: 0<br>
+						}<br>
+						}<br>
+					}).mount('#basic-event')
+				</code>
+			</p>
+			<h2 class="main">Обработчики событий</h2>
+			<p>
+				Логика многих обработчиков событий будет довольно сложной, поэтому оставлять JavaScript-код в
+				значении атрибута v-on бессмысленно. Вот почему v-on также принимает имя метода, который
+				потребуется вызвать.
+			</p>
+			<p>
+				Например:
+			</p>
+			<p class="code">
+				<code class="highlight" data-module="highlight" data-lang="javascript">
+					<div id="event-with-method">
+						&lt;!-- `greet` — это название метода, объявленного ниже --&gt; <br>
+						&lt;button @click="greet"&gt;Поприветствовать&lt;/button&gt;
+					</div>
+				</code>
+			</p>
+			<br> <br>
+			<p class="code">
+				<code class="highlight" data-module="highlight" data-lang="javascript">
+					Vue.createApp({ <br>
+						data() {<br>
+						return {<br>
+							name: 'Vue.js'<br>
+						}<br>
+						},<br>
+						methods: {<br>
+						greet(event) {<br>
+							// `this` в методе указывает на текущий активный экземпляр<br>
+							alert('Привет, ' + this.name + '!')<br>
+							// `event` — нативное событие DOM<br>
+							if (event) {<br>
+							alert(event.target.tagName)<br>
+							}<br>
+						}<br>
+						}<br>
+					}).mount('#event-with-method')
+				</code>
+			</p>
+			<h2 class="main">Методы в inline-обработчиках</h2>
+			<p>
+				Кроме указания имени метода, можно также использовать методы в инлайн-выражениях:
+			</p>
+			<p class="block">
+				<code class="highlight" data-module="highlight" data-lang="javascript">
+					<div id="inline-handler">
+						&lt;button @click="say('hi')"&gt;Скажи hi&lt;/button&gt; <br>
+						&lt;button @click="say('what')"&gt;Скажи what&lt;/button&gt;
+					</div>
+				</code>
+			</p>
+			<p class="code">
+				<code class="highlight" data-module="highlight" data-lang="javascript">
+					Vue.createApp({ <br>
+						methods: {<br>
+						say(message) {<br>
+							alert(message)<br>
+						}<br>
+						}<br>
+					}).mount('#inline-handler')
+				</code>
+			</p>
+			<p>Иногда может потребоваться доступ к оригинальному событию DOM в inline-обработчиках. В этом
+				случае его можно передать в метод, используя специальную переменную $event:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					&lt;button @click="warn('Форма не может быть отправлена.', $event)"&gt;
+						Отправить
+					&lt;/button&gt;
+				</code>
+			</p>
+			<div class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					// ...<br>
+						methods: {<br>
+						warn(message, event) {<br>
+							// теперь есть доступ к нативному событию<br>
+							if (event) {<br>
+							event.preventDefault()<br>
+							}<br>
+							<br>
+							alert(message)<br>
+						}<br>
+					}
+				</code>
+			</div>
+			<h3 class="main">Несколько обработчиков события</h3>
+			<p>В обработчике событий можно задать несколько методов, разделив их оператором запятой:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					&lt;!-- методы one() и two() будут вызваны при клике --&gt; <br>
+					&lt;button @click="one($event), two($event)"&gt; 
+						Отправить
+					&lt;/button&gt;
+				</code>
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					// ...<br>
+						methods: {<br>
+						one(event) {<br>
+							// логика первого обработчика события...<br>
+						},<br>
+						two(event) {<br>
+							// логика второго обработчика события...<br>
+						}<br>
+					}
+				</code>
+			</p>
+		</div>
+
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

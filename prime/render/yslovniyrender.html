@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Условный рендер</h1>
+			<h2 class="main">v-if</h2>
+			<p>Для отрисовки блока по условию используется директива v-if. Блок будет отображаться только в
+				случае, если выражение директивы возвращает значение, которое приводится к true.</p>
+			<p class="code">
+				<code class="highlight">&lt;h1 v-if="awesome"&gt;Vue восхитителен!&lt;/h1&gt;</code>
+			</p>
+			<p>
+				Также можно добавить блок «иначе», используя директиву v-else:
+			</p>
+			<div class="block">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;h1 v-if="awesome"&gt;Vue восхитителен!&lt;/h1&gt; <br>
+        &lt;h1 v-else&gt;О, нет 😢&lt;/h1&gt;</code>
+			</div>
+			<h3 class="main">Условные группы с помощью v-if и template</h3>
+			<p>Поскольку v-if является директивой, то она должна быть указана на одном элементе. Но что если
+				потребуется управлять отображением сразу нескольких элементов? В этом случае можно
+				использовать v-if на элементе template, который работает как невидимая обёртка и в
+				результатах отрисовки не появится.</p>
+			<p class="code">
+				<code class="highlight">
+					&lt;template v-if="ok"&gt; <br>
+					&lt;h1&gt;Заголовок&lt;/h1&gt; <br>
+					&lt;p&gt;Абзац 1&lt;/p&gt; <br>
+					&lt;p&gt;Абзац 2&lt;/p&gt; <br>
+					&lt;/template&gt;
+				</code>
+			</p>
+			<h2 class="main">v-else</h2>
+			<p>Для указания блока «иначе» для v-if можно использовать директиву v-else:</p>
+			<p class="code">
+				<code class="highlight">
+					&lt;div v-if="Math.random() > 0.5"&gt;Сейчас меня видно&lt;/div&gt; <br>
+      				&lt;div v-else&gt;А теперь — нет&lt;/div&gt;
+				</code>
+			</p>
+			<p>Элемент с директивой v-else должен следовать сразу за элементом с директивой v-if или
+				v-else-if — иначе он не будет распознан.</p>
+			<h2 class="main">v-else-if</h2>
+			<p>Как следует из названия, v-else-if служит в качестве блока «else if» директивы v-if. Её можно
+				использовать для создания цепочек из условий:</p>
+			<p class="code">
+				<code class="highlight">
+					&lt;div v-if="type === 'A'"&gt;A&lt;/div&gt; <br>
+					&lt;div v-else-if="type === 'B'"&gt;B&lt;/div&gt; <br>
+					&lt;div v-else-if="type === 'C'"&gt;C&lt;/div&gt; <br>
+            		&lt;div v-else&gt;Точно не A, B или C&lt;/div&gt;
+				</code>
+			</p>
+			<h2 class="main">v-show</h2>
+			<p>Ещё одним вариантом условного отображения является директива v-show. Используется очень
+				похоже:</p>
+			<p class="code">
+				<code class="highlight">&lt;h1 v-show="ok"&gt;Привет!&lt;/h1&gt;</code>
+			</p>
+			<h2 class="main">v-if или v-show</h2>
+			<p>v-if выполняет «настоящую» условную отрисовку, так как гарантирует, что слушатели событий и
+				дочерние компоненты внутри блока должным образом уничтожаются и воссоздаются при
+				переключениях условия.</p>
+			<p>v-if также ленивый: если условие ложно на момент первоначальной отрисовки, то он ничего не
+				сделает — условный блок не будет отрисован до тех пор, пока условие не станет истинным.</p>
+
+			<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+			<footer>
+				<div class="jump">
+					<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+				</div>
+			</footer>
+			<script src="/js/html2pdf.bundle.min.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+			<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

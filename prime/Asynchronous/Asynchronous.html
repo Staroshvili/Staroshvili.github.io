@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Асинхронные запросы</h1>
+			<p>
+				Иногда бывает удобно разделить крупное приложение на части и подгружать компоненты с сервера только
+				тогда, когда в них возникнет потребность. Для этого Vue позволяет определить компонент как
+				функцию-фабрику, асинхронно возвращающую определение компонента. Vue вызовет фабричную функцию только
+				тогда, когда компонент действительно понадобится, и закэширует результат для дальнейшего использования.
+				Например:
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">Vue.component('async-example', function (resolve, reject) { <br>
+        setTimeout(function () {<br>
+          // Передаём определение компонента в коллбэк resolve<br>
+          resolve({<br>
+            template: '&lt;div&gt;Я — асинхронный!&lt;/div&gt;'<br>
+          })<br>
+        }, 1000)<br>
+      })</code>
+			</p>
+			<p>Функция-фабрика принимает параметр resolve — коллбэк, который вызывается после того, как определение
+				компонента получено от сервера. Кроме того, можно вызвать reject(reason), если загрузка по какой-либо
+				причине не удалась. Мы используем setTimeout исключительно в демонстрационных целях; как именно получать
+				компонент в реальной ситуации — решать только вам самим. Один из удачных подходов — это использовать
+				асинхронные компоненты в связке с функциями Webpack по разделению кода:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">Vue.component('async-webpack-example', function (resolve) { <br>
+        // Специальный синтаксис require укажет Webpack<br>
+        // автоматически разделить сборку на части<br>
+        // для последующей асинхронной загрузки<br>
+        require(['./my-async-component'], resolve)<br>
+      })</code>
+			</p>
+			<p>Также можно возвращать Promise из функции-фабрики, поэтому с Webpack 2 и синтаксисом ES2015 можно
+				использовать динамические импорты:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">Vue.component(<br>
+        'async-webpack-example',<br>
+        // Динамический импорт возвращает Promise<br>
+        () => import('./my-async-component')<br>
+      )</code>
+			</p>
+			<p>При использовании локальной регистрации компонентов, вы также можете непосредственно указывать функцию,
+				которая возвращает Promise:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">new Vue({<br>
+        // ...<br>
+        components: {<br>
+          'my-component': () => import('./my-async-component')<br>
+        }<br>
+      })</code>
+			</p>
+
+			<h2>Управление состоянием загрузки</h2>
+			<p>Фабрика асинхронного запроса также может возвращать объект следующего формата:</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">const AsyncComponent = () => ({<br>
+        // Загружаемый компонент. Значение должно быть Promise<br>
+        component: import('./MyComponent.vue'),<br>
+        // Компонент загрузки, используемый пока загружается асинхронный компонент<br>
+        loading: LoadingComponent,<br>
+        // Компонент ошибки, используемый при неудачной загрузке<br>
+        error: ErrorComponent,<br>
+        // Задержка перед показом компонента загрузки. По умолчанию: 200 мс.<br>
+        delay: 200,<br>
+        // Компонент ошибки будет отображаться, если таймаут<br>
+        // был указан и время ожидания превышено. По умолчанию: Infinity.<br>
+        timeout: 3000<br>
+      })</code>
+			</p>
+		</div>
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

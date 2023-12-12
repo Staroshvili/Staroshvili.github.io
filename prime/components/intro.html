@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Базовый пример</h1>
+			<p>
+				Пример компонента Vue:
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					// Создаём приложение Vue br
+		const app = Vue.createApp({}) <br>
+		 <br>
+		// Определяем новый глобальный компонент с именем button-counter br
+		app.component('button-counter', { <br>
+		  data() { <br>
+			return { <br>
+			  count: 0 <br>
+			} <br>
+		  }, <br>
+		  template: ` <br>
+			&lt;button @click="count++">
+			  Счётчик кликов — {{ count }}
+			&lt;/button&gt;`
+		})</code>
+			</p>
+			<p>
+				Компоненты — переиспользуемые экземпляры со своим именем: для примера выше это <button-counter>. Его
+					можно использовать как пользовательский тег в корневом экземпляре:
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">&lt;div id="components-demo"&gt;
+		&lt;button-counter&gt;&lt;/button-counter&gt;
+		&lt;/div&gt;
+	  </code>
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">app.mount('#components-demo')</code>
+			</p>
+			<p>Поскольку компоненты это переиспользуемые экземпляры, то у них могут быть те же опции что и у корневого
+				экземпляра: data, computed, watch, methods, хуки жизненного цикла.</p>
+
+		</div>
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+	<body>
+		<div class="container">
+				<h1 class="main">Связывание inline-стилей</h1>
+				<div class="content">
+<h2 class="main">Объектный синтаксис</h2>
+<p>
+	Объектный синтаксис для :style выглядит почти как для CSS, за исключением того, что это объект JavaScript. Поэтому для указания имён свойств CSS можно использовать как camelCase, так и kebab-case (не забывайте про кавычки при использовании kebab-case):
+</p>
+<p class="block" data-file="App.vue">
+	<code class="highlight" data-module="highlight" data-lang="html">
+		&lt;div :style="{ color: activeColor, fontSize: fontSize + 'px' }"&gt;&lt;/div&gt;
+	</code>
+</p>
+<p class="block" data-file="App.vue">
+	<code class="highlight" data-module="highlight" data-lang="html">
+		data() { <br>
+			return { <br>
+			activeColor: 'red', <br>
+			fontSize: 30 <br>
+			} <br>
+		}
+	</code>
+</p>
+<p>Рекомендуется привязывать стили к объекту данных, чтобы сделать шаблон чище:</p>
+<p class="block" data-file="App.vue">
+	<code class="highlight" data-module="highlight" data-lang="html"><div :style="styleObject"></div></code>
+</p>
+<p class="block" data-file="App.vue">
+	<code class="highlight" data-module="highlight" data-lang="html">data() { <br>
+		return { <br>
+		  styleObject: { <br>
+			color: 'red', <br>
+			fontSize: '13px' <br>
+		  } <br>
+		} <br>
+	  }</code>
+</p>
+<p>Аналогично можно использовать и вычисляемые свойства, возвращающие объект стилей.</p>
+
+<h3 class="main">Синтаксис с массивом</h3>
+<p>Синтаксис с массивом для :style позволяет применить несколько объектов стилей к одному и тому же элементу:</p>
+<p class="code" data-file="App.vue">
+	<code class="highlight" data-module="highlight" data-lang="html">
+		&lt;div :style="[baseStyles, overridingStyles]"&gt;&lt;/div&gt;
+	</code>
+</p>
+
+<h3 class="main">Автоматические префиксы</h3>
+<p>Если использовать CSS-свойство, которое требует вендорного префикса (opens new window)в :style, Vue автоматически добавит соответствующий префикс. Во время выполнения будет проверять какие стилевые свойства поддерживаются в текущем браузере. Если определённое свойство не поддерживается браузером, то будут проверены различные варианты префиксов, чтобы попытаться найти тот, который поддерживается.</p>
+
+<h3 class="main">Множественные значения</h3>
+<p>Можно передать массив из нескольких (префиксных) значений в свойство style, например:</p>
+<p class="code" data-file="App.vue">
+	<code class="highlight" data-module="highlight" data-lang="html">
+		&lt;div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"&gt;&lt;/div&gt;
+	</code>
+</p>
+<p>В этом случае будет выбрано только последнее значение в массиве, которое поддерживает браузер. Например, display: flex для браузеров с поддержкой flexbox без префиксов.</p>
+<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+<footer>
+	<div class="jump">
+		<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+	</div>
+</footer>
+<script src="/js/html2pdf.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

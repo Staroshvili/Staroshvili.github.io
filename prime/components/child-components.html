@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+				<h1 class="main">Переиспользование компонентов</h1>
+<p>
+	Компоненты можно повторно использовать столько раз, сколько потребуется:
+</p>
+<p class="code" data-file="App.vue">
+	<code class="highlight" data-module="highlight" data-lang="html">&lt;div id="components-demo"&gt; <br>
+		&lt;button-counter&gt;&lt;/button-counter&gt;<br>
+		&lt;button-counter&gt;&lt;/button-counter&gt;<br>
+		&lt;button-counter&gt;&lt;/button-counter&gt;<br>
+	  &lt;/div&gt;</code>
+</p>
+<p>Обратите внимание, при нажатиях на кнопки, каждая изменяет свой собственный count. Всё потому, что каждый раз при использовании компонента будет создаваться его новый экземпляр.</p>
+
+
+
+<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+<footer>
+	<div class="jump">
+		<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+	</div>
+</footer>
+<script src="/js/html2pdf.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<title>Vue.js - курсовая</title>
+
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style2.css">
+	<link rel="stylesheet" href="/js/highlighter/highlighter.css?v=79">
+
+
+	<script src="/js/highlighter/highlighter.js?v=118"></script>
+	<script src="/js/pdf.js"></script>
+
+	<meta name="yandex-verification" content="00eb45b7559e5c68">
+	<meta name="google-site-verification" content="Af0TM2OrwIEtjoQXxYz2-1C-21E1m7DB23_kWpE9sLg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico">
+</head>
+
+<body>
+	<div id="invoice">
+		<div class="container">
+			<h1 class="main">Модификаторы событий</h1>
+			<p>
+				Часто может потребоваться вызвать event.preventDefault() или event.stopPropagation() внутри
+				обработчиков события. Хоть это и легко можно сделать внутри методов, лучше если методы будут
+				содержать в себе только логику и не иметь дела с деталями события DOM.
+			</p>
+			<p>
+				Для решения этой задачи Vue предоставляет модификаторы событий для v-on. Вспомните, что
+				модификаторы — это постфиксы директивы, отделяемые точкой:
+			</p>
+			<ul>
+				<li>1.stop</li>
+				<li>2.prevent</li>
+				<li>3.capture</li>
+				<li>4.self</li>
+				<li>5.once</li>
+				<li>6.passive</li>
+			</ul>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					&lt;!-- всплытие события click будет остановлено --&gt; <br>
+					&lt;a @click.stop="doThis"&gt;&lt;/a&gt; <br>
+					<br>
+					&lt;!-- событие submit перестанет перезагружать страницу --&gt;<br>
+					&lt;form @submit.prevent="onSubmit"&gt;&lt;/form&gt;<br>
+					<br>
+					&lt;!-- модификаторы можно объединять в цепочки --&gt;<br>
+					&lt;a @click.stop.prevent="doThat"&gt;&lt;/a&gt;<br>
+					<br>
+					&lt;!-- можно использовать без обработчиков --&gt;<br>
+					&lt;form @submit.prevent&gt;&lt;/form&gt;<br>
+					<br>
+					&lt;!-- можно отслеживать события в режиме capture, т.е. событие, нацеленное --&gt;<br>
+					&lt;!-- на внутренний элемент, обрабатывается здесь до обработки этим элементом --&gt;<br>
+					&lt;div @click.capture="doThis"&gt;...&lt;/div&gt;<br>
+					<br>
+					&lt;!-- вызов обработчика только в случае наступления события непосредственно --&gt;<br>
+					&lt;!-- на данном элементе (то есть не на дочернем компоненте) --&gt;<br>
+					&lt;div @click.self="doThat"&gt;...&lt;/div&gt;
+				</code>
+			</p>
+			<br> <br>
+			<p class="code">
+				<code class="highlight" data-module="highlight" data-lang="html">
+					&lt;!-- обработчик click будет вызван максимум 1 раз --&gt; <br>
+					&lt;a @click.once="doThis"&gt;&lt;/a&gt;
+				</code>
+			</p>
+			<p>
+				В отличие от других модификаторов, которые поддерживают только нативные события DOM, модификатор
+				.once можно использовать и с пользовательскими событиями компонентов. Если ещё не читали о
+				компонентах — не беспокойтесь об этом пока.
+			</p>
+			<p class="code" data-file="App.vue">
+				<code class="highlight" data-module="highlight" data-lang="html"><!-- по умолчанию событие scroll (при прокрутке) произойдёт -->
+					&lt;!-- незамедлительно, вместо ожидания окончания `onScroll`  --&gt; <br>
+					&lt;!-- на случай, если там будет `event.preventDefault()`     --&gt; <br>
+					&lt;div @scroll.passive="onScroll"&gt;...&lt;/div>
+				</code>
+			</p>
+			<p>
+				Модификатор .passive особенно полезен для улучшения производительности на мобильных устройствах.
+			</p>
+		</div>
+	</div>
+
+	<button class="pdf" onclick="generatePDF()">Сохранить в PDF</button>
+	<footer>
+		<div class="jump">
+			<a href="#" id="toTop"><img src="/img/arrow-up.svg"></a>
+		</div>
+	</footer>
+	<script src="/js/html2pdf.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../../../../../js/metrika.js?v=1"></script>
+</body>
+
+</html>

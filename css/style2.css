@@ -1,0 +1,89 @@
+html{
+    box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before{
+    box-sizing: inherit;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+ul{
+    list-style: none;
+}
+
+.pdf{
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block; 
+}
+
+#toTop{
+    background-color: #aaca3c;
+    padding: 5px;
+    cursor: pointer;
+    z-index: 9999;
+    bottom: 10px;
+    right: 10px;
+    position: fixed;
+  }
+
+body{
+    font-size: 20px;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 300;
+}
+
+.container{
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.kurs {
+    margin-top: 30%;
+    text-align: center;
+}
+.name {
+    font-weight: 700;
+    font-size: 24px;
+}
+.slogan {
+    margin-top: 2%;
+}
+.start-btn{
+    padding: 10px 20px 10px  20px;
+    margin-top: 2%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+.start-a{
+
+}
+
+.main{
+    text-align: center;
+}
+.vue-btn{
+    padding: 10px 10px 10px  10px;
+    max-width: 400px;
+
+}
+.blocks{
+    text-align: center;
+}
+.code{
+}
+.lifecycle{
+    display: block;
+    margin: 10px auto;
+    width: 600px;
+}
